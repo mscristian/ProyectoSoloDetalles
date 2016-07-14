@@ -1,0 +1,159 @@
+#pagina{
+    margin: 0 auto;
+    width: 950px;
+    min-height: 650px;
+    height: auto;
+    background: rgba(255, 246, 248, 0.17);
+}
+
+#prinick {
+    margin: 100px auto;
+    width: 300px;
+    height: 340px;
+    background: rgba(54, 100, 255, 0.28);
+} 
+
+#logo {
+    width: 150px;
+    height: 150px;
+    background: url('../images/logo.png') no-repeat;
+    background-size: 100px 110px;
+    background-size: 90%;
+}
+
+#buscar{
+    position: absolute;
+    margin: -35px 0px 0px 742px;
+}
+
+#buttons {
+    background: rgba(215, 215, 255, 0.83); 
+    padding: 10px 100px; 
+    color: #000000;
+}
+
+#buttons1 {
+    background: rgba(215, 215, 255, 0.83); 
+    padding: 8px 40px; 
+    color: #000000;
+}
+
+body {
+    background:  url('../images/bg.jpg') repeat;
+    background-size:100% 100%; 
+	background-attachment:fixed;
+}
+
+nav {
+    height: 35px;
+    color: black;
+    background: rgba(21, 39, 250, 0.41);
+}
+
+section.separador {
+    background: rgba(27, 167, 255, 0);
+    height: 10px;
+}
+
+section.contenido {
+    min-height: 420px;
+    background: rgba(27, 167, 255, 0);
+    height: 10px;
+}
+
+section {
+    padding: 1px;
+    background: rgba(209, 219, 255, 0);
+}
+
+aside {
+    margin: 12px 0px 0px 0px;
+    float: left;
+    color: black;
+    background: rgba(21, 39, 250, 0.41);
+    padding: 5px;
+    width: 160px;
+    height: 393px;
+    margin-right: 25px;
+    text-decoration: none;
+}
+
+footer {
+    background: rgba(21, 39, 250, 0.41);
+    height: 20px;
+    margin: 0px auto 0px auto;
+    padding: 10px;
+}
+
+nav ul, aside ul, section ul {
+    color: black;
+    margin: 0px 0px 0px -40px;
+    list-style: none;
+}
+
+aside ul li, section ul li {
+    color: black;
+    padding: 3px;
+    height: 29px;
+    line-height: 29px;
+    background: rgba(162, 165, 237);
+    text-decoration: none;
+    display:list-item;
+}
+
+aside ul li:hover, section ul li:hover {
+    font-weight: bold;
+    color: aliceblue;
+    background:  rgba(0, 248, 67, 0.37);
+}
+
+nav ul li {
+    color: black;
+    padding: 3px;
+    height: 29px;
+    line-height: 29px;
+    background: rgba(162, 165, 237);
+    display: inline-block;
+}
+
+nav ul li:hover, .btn-buscar:hover {
+    font-weight: bold;
+    color: aliceblue;
+    background:  rgba(0, 10, 248, 0.43);
+}
+
+.btn-buscar {
+    margin: 0px 0px 0px 173px;
+    position: absolute; 
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    background: rgba(162, 165, 237);
+    cursor: pointer;
+}
+
+.inp-buscar {
+    color: black;
+    background: #d5d5ff;
+    position: absolute;
+    margin: 0px 0px 0px -2px;
+    height: 33px;
+    border: none;
+    padding-left: 6px;
+}
+
+.inp-buscar1 {
+    color: black;
+    background: #d5d5ff;
+    margin: 0px 0px 0px -2px;
+	width: 250px;
+    height: 31px;
+    border: none;
+	padding-left: 6px;
+}
+
+.inp-buscar:hover, .inp-buscar1:hover {
+    background: #e1e1ff;
+}
+
