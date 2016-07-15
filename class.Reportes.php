@@ -1,7 +1,4 @@
 <?php
-
-include('class.Conexion.php');
-
 class Reportes {
 	
 	protected $a;
@@ -102,17 +99,21 @@ class Reportes {
 		if ($a==1) {
 			if ($d==1) {
 				$d="detalle_venta.fecha";
-			}
+			} else if ($d==3) {
+                $d="detalle_venta.Venta_idVenta";
+            }
 			$prodcon = "detalle_venta.Venta_idVenta,categoria.familia,producto.nombre_prod,producto.precio,estado.descripcionEstado,detalle_venta.cantidad,detalle_venta.fecha";
 			$inven = "detalle_venta";
 		} else {
 			if ($d==1) {
 				$d="detalle_compra.fecha";
-			}
+			} else if ($d==3) {
+                $d="detalle_compra.compra_idcompra";
+            }
 			$prodcon = "detalle_compra.compra_idcompra,categoria.familia,producto.nombre_prod,producto.precio,estado.descripcionEstado,detalle_compra.cantidad,detalle_compra.fecha";
 			$inven = "detalle_compra";
 		}
-		
+		 
 		$db = new Conexion();
 		$sql = $db->query("
 		
