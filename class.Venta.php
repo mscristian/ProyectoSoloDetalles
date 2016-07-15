@@ -4,9 +4,11 @@ class Venta {
 	protected $total_origianl;
 	protected $total_real;
 	protected $fecha;
+	protected $id;
 	
 	
-    public function __construct($total_origianl,$total_real,$fecha) {
+    public function __construct($id,$total_origianl,$total_real,$fecha) {
+		$this->id = $id;
         $this->total_origianl=$total_origianl;
 		$this->total_real=$total_real;
 		$this->fecha=$fecha;
@@ -14,7 +16,7 @@ class Venta {
     
     public function Ingresar() {
        $db = new Conexion();
-		$db->query("INSERT INTO `venta`(`total_original`, `total_real`,`fecha`) VALUES ($this->total_origianl,$this->total_real,'$this->fecha');");
+		$db->query("INSERT INTO `venta`(`cliente_idcliente`,`total_original`, `total_real`,`fecha`) VALUES ($this->id,$this->total_origianl,$this->total_real,'$this->fecha');");
 		
     }
 	public function Imprimir() {
