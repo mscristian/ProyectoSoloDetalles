@@ -23,16 +23,16 @@
 		</form>	
 		{if isset($mod)}
 			{if $mod eq "n1"}
-				no se encontro la categoría
+				<br>No se encontro la categoría
 			{else}
 <br>
-				Categoría:<br>
+				Categoría:<br><br>
 	
 				<form action="principal.php?opcion=categoria&opc=Modificar" method="post">
 					<table>
 						<tr><td>Nombre</td><td><input type="text" name="familia" value="{$mod[1]}" class="inp-buscar2" required/></td></tr>
 						<tr><td>Descipción</td><td><input type="text" name="descripcion" value="{$mod[2]}" class="inp-buscar2" required/></td></tr>
-					</table>
+					</table><br>
 					<input type="submit" name="modifique" value="Modificar" id="buttons1">	
 				</form>
 			{/if}
@@ -51,14 +51,15 @@
 No se encontraron Categorías
 {else}
 <br />
-<table border="1">
-	<tr><td>Nombre de la categoría</td>
-        <td>Descipción</td>
-        <td>Cantidad Total</td>
+<table>
+	<tr bgcolor="#000000" style="color:#ffffff">
+		<td style="text-align: center">Nombre de la categoría</td>
+        <td style="text-align: center">Descipción</td>
+        <td style="text-align: center">Cantidad Total</td>
     </tr>
-	<tr><td>{$vec[1]}</td>
-        <td>{$vec[2]}</td>
-        <td>{$vec[3]}</td>
+	<tr><td style="text-align: center">{$vec[1]}</td>
+        <td style="text-align: center">{$vec[2]}</td>
+        <td style="text-align: center">{$vec[3]}</td>
     </tr>
 </table>
 {/if}

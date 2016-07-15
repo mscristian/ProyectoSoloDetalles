@@ -20,28 +20,28 @@ Ingrese el nombre exacto del producto
             {else}
                 <br />	
 
-                <table border="1">			
-                    <tr>
-                        <td>Nombre</td>
-                        <td>Familia</td>
-                        <td>Precio</td>
-                        <td>Estado</td>
-                        <td>Cantidad</td>
-                        <td>Descripciòn</td>
-                        <td>Existencia total</td>
+                <table>			
+                    <tr bgcolor="#000000" style="color:#ffffff">
+                        <td style="text-align: center">Nombre</td>
+                        <td style="text-align: center">Familia</td>
+                        <td style="text-align: center">Precio</td>
+                        <td style="text-align: center">Estado</td>
+                        <td style="text-align: center">Cantidad</td>
+                        <td style="text-align: center">Descripciòn</td>
+                        <td style="text-align: center">Existencia total</td>
                     </tr>		
                     <tr>	
-                        <td>{$dato1[0]}</td>
-                        <td>{$dato1[4]}</td>
-                        <td>{$dato1[1]}</td>
+                        <td style="text-align: center">{$dato1[0]}</td>
+                        <td style="text-align: center">{$dato1[4]}</td>
+                        <td style="text-align: center">{$dato1[1]}</td>
 						{if $dato1[2] eq 0}
-                        <td>Activo</td>
+                        <td style="text-align: center">Activo</td>
 						{else}
-						<td>Desactivo</td>
+						<td style="text-align: center">Desactivo</td>
 						{/if}
-                        <td>{$dato1[3]}</td>
-                        <td>{$dato1[5]}</td>
-                        <td>{$dato1[6]}</td>
+                        <td style="text-align: center">{$dato1[3]}</td>
+                        <td style="text-align: center">{$dato1[5]}</td>
+                        <td style="text-align: center">{$dato1[6]}</td>
                     </tr>                    
 </table>
                     <form method="post"  target="_blank" action="includes/contenido/Reporte.php">           
@@ -65,29 +65,34 @@ Ingrese el nombre exacto del producto
             {if $dato2 eq "No se han encontrado datos"}
                 <br />	
                 {$dato2}	
-            {else}		
+            {else}	
 				<center>
-                    <br />
-				<table border="1">	
-					<tr>
-                        <td>Categoría o Familia</td>
-                        <td>Descripción</td>
-                        <td>Existencia total</td>
-                        <td>Nombre producto</td>
-                        <td>Cantidad Interna</td><td>Precio</td>
-                        <td>Estado</td>
+					<br>Datos Encontrados:
+                    <br /><br>
+				<table>	
+					<tr bgcolor="#000000" style="color:#ffffff">
+                        <td style="text-align: center">Categoría o Familia</td>
+                        <td style="text-align: center">Descripción</td>
+                        <td style="text-align: center">Existencia total</td>
+                        <td style="text-align: center">Nombre producto</td>
+                        <td style="text-align: center">Cantidad Interna</td><td style="text-align: center">Precio</td>
+                        <td style="text-align: center">Estado</td>
 					</tr>
 				{for $i=0 to ($vec-1)}
-					<tr>
+					{if $i % 2 eq 0 }
+            		<tr>
+            		{else}
+            		<tr style="background:  rgb(178, 178, 178)">
+					{/if}
 						{for $j=0 to 6}
 						{if $j eq 6}
 							{if $dato1[$i][6] eq 0}
-							<td>Activo</td>
+							<td style="text-align: center">Activo</td>
 							{else}
-							<td>Desactivo</td>
+							<td style="text-align: center">Desactivo</td>
 							{/if}
 						{else}
-							<td>{$dato2[$i][$j]}</td>
+							<td style="text-align: center">{$dato2[$i][$j]}</td>
 						{/if}
 						{/for}
 					</tr>
@@ -96,35 +101,39 @@ Ingrese el nombre exacto del producto
 				</center>
             {/if}
 		{elseif $con eq 3}
-<br>los datos que hay son<br><br>
-		<table border="1">	
-			<tr>
-                <td>Categoría o Familia</td>
-                <td>Descripción</td>
-                <td>Cantidad Total</td> 
-                <td>Nombre</td>
-                <td>Estado</td>
-                <td>Precio</td>
-                <td>Cantidad</td>
-			</tr>
-		{for $i=0 to ($vec-1)}					
-		<tr>	
-			{for $j=0 to 6}
-				{if $j eq 4}
-					{if $dato3[$i][4] eq 0}
-						<td>Activo</td>
-					{else}
-						<td>Desactivo</td>
-					{/if}
-				{else}
-					<td>{$dato3[$i][$j]}</td>	
-				{/if}
-			{/for}	
-		</tr>	
-		{/for}
-		</table>
-		{/if}
-	{/if}
+<br>los datos que hay son:<br><br>
+            <table >	
+                <tr tr bgcolor="#000000" style="color:#ffffff">
+                    <td style="text-align: center">Categoría o Familia</td>
+                    <td style="text-align: center">Descripción</td>
+                    <td style="text-align: center">Cantidad Total</td> 
+                    <td style="text-align: center">Nombre</td>
+                    <td style="text-align: center">Estado</td>
+                    <td style="text-align: center">Precio</td>
+                    <td style="text-align: center">Cantidad</td>
+                </tr>
+            {for $i=0 to ($vec-1)}					
+            {if $i % 2 eq 0 }
+            <tr>
+            {else}
+            <tr style="background:  rgb(178, 178, 178)">
+            {/if}	
+                {for $j=0 to 6}
+                    {if $j eq 4}
+                        {if $dato3[$i][4] eq 0}
+                            <td style="text-align: center">Activo</td>
+                        {else}
+                            <td style="text-align: center">Desactivo</td>
+                        {/if}
+                    {else}
+                        <td style="text-align: center">{$dato3[$i][$j]}</td>	
+                    {/if}
+                {/for}	
+            </tr>	
+            {/for}
+            </table>
+            {/if}
+        {/if}
 {else}
 <a href="principal.php?opcion=inventario&opc=consultar&con=3" class="link1"><h1 class="fa fa-shopping-bag fa-2x">Inventario</h1><br />
 <p class="fa fa-suitcase fa-5x"></p></a>
