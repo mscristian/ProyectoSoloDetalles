@@ -61,8 +61,8 @@
 }
 
 body {
-	color: #d4d4d4;
-    background:  url('../images/bg.png') repeat;
+	color: #000000;
+    background:  url('../images/bg.jpg') repeat;
 	background-attachment:fixed;
 	text-decoration:none;  
 }
@@ -73,29 +73,29 @@ a {
 
 nav {
     height: 35px;
-    color: #393939;
+    color: rgb(57, 57, 57);
     background: rgba(72, 72, 72, 0.6);
 }
 
 
 section {
     padding: 1px;
-    background: rgba(255, 235, 0, 0);
-	min-height: 385px;
-	margin: 10px auto;
+    background: rgba(101, 101, 101, 0.66);
+	min-height: 401px;
+	margin: 12px auto;
 }
 
-section.separador {
+/*section.separador {
 	min-height: 0px;
-    background: rgba(27, 167, 255, 0);
+    background: rgba(67, 67, 67, 0.71);
     height: 10px;
-}
+}*/
 
 aside {
     margin: 12px 0px 0px 0px;
     float: left;
     color: black;
-    background: rgb(67, 67, 67);
+    background: rgba(67, 67, 67, 0.32);
     padding: 5px;
     width: 160px;
     height: 393px;
@@ -124,7 +124,6 @@ aside ul li, section ul li {
     padding: 3px;
     height: 29px;
     line-height: 29px;
-    background: rgb(67, 67, 67);
 	 text-decoration:none;  
     
     display:list-item;
@@ -216,7 +215,7 @@ footer a {
 .inp-buscar3 {
     color: aliceblue;
     background: #4d4d4d;
-    margin: 0px 0px 0px 800px;
+    margin: 0px 0px 0px 1050px;
 	width: 150px;
     height: 25px;
     border: none;
@@ -229,6 +228,26 @@ footer a {
     background: #4d4d4d;
     margin: 0px 0px 0px -2px;
 	width: 250px;
+    height: 31px;
+    border: none;
+	padding-left: 6px;
+}
+
+.inp-buscar5 {
+    color: aliceblue;
+    background: #4d4d4d;
+    margin: 0px 0px 0px -2px;
+	width: 45px;
+    height: 31px;
+    border: none;
+	padding-left: 6px;
+}
+
+.inp-buscar6 {
+    color: aliceblue;
+    background: #4d4d4d;
+    margin: 0px 0px 0px 10px;
+	width: 100px;
     height: 31px;
     border: none;
 	padding-left: 6px;
