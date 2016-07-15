@@ -11,20 +11,15 @@
     <body>
         <div id="prinick">
             <center><img src="estilos/images/IconLog.png" /></center>
-            <form action="index.php?modo=login" method="POST">
+            <form action="index.php?modo=claveperdida" method="POST">
                 <center>
                 <table>
                     <tr>
-                        <td><label>Usuario: </label></td><td><input type="text" name="user" /></td>
-                    </tr>
-                    <tr>
-                        <td><label>Contraseña: </label></td><td><input type="password" name="pass" /></td>
-                    </tr>
+                        <td><label>Email: </label></td><td><input type="email" name="email" /></td>
+					</tr>
                 </table>
                     </center>
                 <center>
-                    <input type="hidden" name="login" value="1" /> 
-                    <label><input type="checkbox" name="sesion" value="1" />Recordar sesion</label><br />
                     <input type="submit" value="Ingresar" id="buttons" />    
                 </center>
             </form>
@@ -34,8 +29,7 @@
                 {/if}
             </center>	
 			<br/><br/>
-			<a href="index.php?modo=registro">Registro</a><br/><br/>
-			<a href="index.php?modo=claveperdida">Recupera Contraseña</a>
+				
         </div>
     </body>
 </html>

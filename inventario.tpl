@@ -1,16 +1,17 @@
 {if !empty($opc)}
-<h1 class="fa fa-suitcase fa-2x"> Inventario</h1>
-<ul>
+<h1 class="fa fa-shopping-bag fa-2x">  Inventario</h1>
+<!--<ul>
 	<a href="principal.php?opcion=inventario&opc=consultar&con=1"><li>Por nombre de Producto</li></a>
 	<a href="principal.php?opcion=inventario&opc=consultar&con=2"><li>Por nombre de Categoria</li></a>
 	<a href="principal.php?opcion=inventario&opc=consultar&con=3"><li>Consultar todos Los Productos</li></a>
-</ul>
-<br />
+</ul>-->
 	{if $opc eq 1}
 		{if $con eq 1}
-<h4>Ingrese el nombre exacto del producto</h4>
+<br>
+Ingrese el nombre exacto del producto
+<br><br>
 			<form action="principal.php?opcion=inventario&opc=consultar&con=1" method="post">
-			<input type="text" name="buscar" class="inp-buscar1"  placeholder="Buscar..."/>
+			<input type="text" name="buscar" class="inp-buscar1"  placeholder="Ejemplo Osos Grandes..."/>
 			<input type="submit" value="Consultar" id="buttons1"/>
 			</form>
 			{if $dato1 eq "n1"}
@@ -33,7 +34,11 @@
                         <td>{$dato1[0]}</td>
                         <td>{$dato1[4]}</td>
                         <td>{$dato1[1]}</td>
-                        <td>{$dato1[2]}</td>
+						{if $dato1[2] eq 0}
+                        <td>Activo</td>
+						{else}
+						<td>Desactivo</td>
+						{/if}
                         <td>{$dato1[3]}</td>
                         <td>{$dato1[5]}</td>
                         <td>{$dato1[6]}</td>
@@ -51,9 +56,10 @@
             </form> 
             {/if}
         {elseif $con eq 2}
-<h4>Ingrese el nombre de la categoria</h4>
+<br>Ingrese el nombre de la categoría
+<br><br>
             <form action="principal.php?opcion=inventario&opc=consultar&con=2" method="post">
-            <input type="text" name="buscar2" class="inp-buscar4" placeholder="Buscar..."/>
+            <input type="text" name="buscar2" class="inp-buscar4" placeholder="Ejemplo Perros..."/>
             <input type="submit" value="Consultar" id="buttons1"/>
             </form>
             {if $dato2 eq "No se han encontrado datos"}
@@ -64,7 +70,7 @@
                     <br />
 				<table border="1">	
 					<tr>
-                        <td>Categoria o Familia</td>
+                        <td>Categoría o Familia</td>
                         <td>Descripción</td>
                         <td>Existencia total</td>
                         <td>Nombre producto</td>
@@ -74,7 +80,15 @@
 				{for $i=0 to ($vec-1)}
 					<tr>
 						{for $j=0 to 6}
-						<td>{$dato2[$i][$j]}</td>
+						{if $j eq 6}
+							{if $dato1[$i][6] eq 0}
+							<td>Activo</td>
+							{else}
+							<td>Desactivo</td>
+							{/if}
+						{else}
+							<td>{$dato2[$i][$j]}</td>
+						{/if}
 						{/for}
 					</tr>
 				{/for}
@@ -82,10 +96,10 @@
 				</center>
             {/if}
 		{elseif $con eq 3}
-<h4>los datos que hay son</h4>
+<br>los datos que hay son<br><br>
 		<table border="1">	
 			<tr>
-                <td>Categoria o Familia</td>
+                <td>Categoría o Familia</td>
                 <td>Descripción</td>
                 <td>Cantidad Total</td> 
                 <td>Nombre</td>
@@ -96,7 +110,15 @@
 		{for $i=0 to ($vec-1)}					
 		<tr>	
 			{for $j=0 to 6}
-			<td>{$dato3[$i][$j]}</td>	
+				{if $j eq 4}
+					{if $dato3[$i][4] eq 0}
+						<td>Activo</td>
+					{else}
+						<td>Desactivo</td>
+					{/if}
+				{else}
+					<td>{$dato3[$i][$j]}</td>	
+				{/if}
 			{/for}	
 		</tr>	
 		{/for}
