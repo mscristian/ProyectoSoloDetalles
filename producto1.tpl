@@ -10,8 +10,8 @@
 		<form action="principal.php?opcion=producto&opc=Ingresar" method="post">
 			<table>
 				<tr><td>Nombre</td><td><input type="text" name="nombre" class="inp-buscar2" placeholder="Ejemplo Osos Grandes..." required/></td>
-			<tr><td>Cantidad Producto</td><td><input type="text" class="inp-buscar2" name="cantidadP" placeholder="Ejemplo 50..." required/></td>
-			<tr><td>Precio</td><td><input type="text" name="precio" class="inp-buscar2" placeholder="Ejemplo 750000..." required/></td>
+			<tr><td>Cantidad Producto</td><td><input type="number" class="inp-buscar2" name="cantidadP" placeholder="Ejemplo 50..." required/></td>
+			<tr><td>Precio</td><td><input type="number" name="precio" class="inp-buscar2" placeholder="Ejemplo 750000..." required/></td>
 			<tr><!--<td>Estado</td><td><input type="text" name="estado" class="inp-buscar2" required/></td>
                 <tr>--><td>Familia</td><td>
                     
@@ -58,8 +58,8 @@
                         </select>       
                         
                         </td></tr>
-					<tr><td>Cantidad </td><td><input type="text" name="cantidad" value="{$mod[2]}" class="inp-buscar2" required/></td></tr>
-					<tr><td>Precio </td><td><input type="text" name="precio" value="{$mod[3]}" class="inp-buscar2" required/></td></tr>
+					<tr><td>Cantidad </td><td><input type="number" name="cantidad" value="{$mod[2]}" class="inp-buscar2" required/></td></tr>
+					<tr><td>Precio </td><td><input type="number" name="precio" value="{$mod[3]}" class="inp-buscar2" required/></td></tr>
 					<tr><td>Estado </td><td>{if $mod[4] eq 0}Activo{else}Desactivo{/if}<input type="hidden" name="estado" value="{$mod[4]}" class="inp-buscar2" required/></td></tr>
 					</table>
 					<br><input type="submit" name="modifique" value="Modificar" id="buttons1">	
@@ -72,6 +72,7 @@
 	{elseif $opc eq 3}	
 <li class="fa fa-archive fa-2x"> Consultar Producto</li><br><br>
 <form action="principal.php?opcion=producto&opc=Consultar" method="post">
+			Ingrese el nombre exacto del producto:<br><br>
 			<input type="text" name="buscar" class="inp-buscar1" placeholder="Ejemplo Osos Grandes..."/>
 			<input type="submit" value="Consultar" id="buttons1"/>
 			</form>
@@ -80,20 +81,20 @@
                 No se encontraron productos
             {else}
                 <br />			
-                <table border="1">			
-                    <tr>
-                        <td>Producto</td>
-                        <td>Categoría</td>
-                        <td>Cantidad</td>
-                        <td>Precio</td>
-                        <td>Estado</td>
+                <table>			
+                    <tr bgcolor="#000000" style="color:#ffffff">
+                        <td style="text-align: center">Producto</td>
+                        <td style="text-align: center">Categoría</td>
+                        <td style="text-align: center">Cantidad</td>
+                        <td style="text-align: center">Precio</td>
+                        <td style="text-align: center">Estado</td>
                     </tr>		
                     <tr>	
-                        <td>{$dato1[0]}</td>
-                        <td>{$dato1[1]}</td>
-                        <td>{$dato1[2]}</td>
-                        <td>{$dato1[3]}</td>
-                        <td>{if $dato1[4] eq 0}Activo{else}Desactivo{/if}</td>
+                        <td style="text-align: center">{$dato1[0]}</td>
+                        <td style="text-align: center">{$dato1[1]}</td>
+                        <td style="text-align: center">{$dato1[2]}</td>
+                        <td style="text-align: center">{$dato1[3]}</td>
+                        <td style="text-align: center">{if $dato1[4] eq 0}Activo{else}Desactivo{/if}</td>
                     </tr>
                 </table>
             {/if}

@@ -84,10 +84,10 @@
                         <a href="principal.php?opcion=producto"><li><i class="fa fa-archive"></i> Productos</li></a>
 						<a href="principal.php?opcion=categoria"><li><i class="fa fa-archive"></i> Categoría</li></a>
                         <a href="principal.php?opcion=proveedor"><li><i class="fa fa-truck"></i> Proveedores</li></a>
-                        <a href="principal.php?opcion=vender"><li><i class="fa fa-shopping-basket"></i> Vender</li></a>
+                        <a href="principal.php?opcion=vender"><li><i class="fa fa-shopping-basket"></i> Ventas</li></a>
 						<a href="principal.php?opcion=clientes"><li><i class="fa fa-child"></i> Clientes</li></a>
 						<a href="principal.php?opcion=reportes"><li><i class="fa fa-bar-chart"></i> Reportes</li></a>
-                        <a href="principal.php?opcion=comprar"><li><i class="fa fa-shopping-cart"></i> Comprar</li></a>
+                        <a href="principal.php?opcion=comprar"><li><i class="fa fa-shopping-cart"></i> Compras</li></a>
                     </ul>
                     <!--<div id="buscar">
                         <input class="inp-buscar" type="text" value="" name="" placeholder="Buscar...">
@@ -112,7 +112,7 @@
 				
 				{elseif $submenu eq 3}
 				<ul>	
-					<a href="principal.php?opcion=producto&opc=Ingresar"><li>Ingresar Producto</li></a>
+					<a href="principal.php?opcion=producto&opc=Ingresar"><li>Crear Producto</li></a>
 					<a href="principal.php?opcion=producto&opc=Modificar"><li>Modificar Producto</li></a>
 					<a href="principal.php?opcion=producto&opc=Consultar"><li>Consultar Producto</li></a>
 				</ul>
@@ -126,7 +126,7 @@
 				{elseif $submenu eq 5}
 				<ul>	
 					<a href="principal.php?opcion=vender&opc=Ingresar"><li>Ingresar Venta</li></a>
-					<a href="principal.php?opcion=vender&opc=Devolucion"><li>Devolución</li></a>
+					<a href="principal.php?opcion=vender&opc=Devolucion"><li>Cambiar estados</li></a>
 					<a href="principal.php?opcion=vender&opc=Consultar"><li>Consultar</li></a>
 				</ul>
 				{elseif $submenu eq 6}
@@ -138,7 +138,7 @@
 				{elseif $submenu eq 7}
 				<ul>	
 					<a href="principal.php?opcion=reportes&opc=consulta_unica"><li>Consulta unica</li></a>
-					<a href="principal.php?opcion=reportes&opc=consulta_mezclada"><li>Consulta mezclada</li></a>
+					<!--<a href="principal.php?opcion=reportes&opc=consulta_mezclada"><li>Consulta mezclada</li></a>-->
 				</ul>
 				{elseif $submenu eq 8}
 				<ul>	
