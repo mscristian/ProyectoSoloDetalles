@@ -6,7 +6,6 @@ class Producto {
 	protected $precio;
 	protected $estado;
 	protected $nombre;
-    public $nombreO;
     // $categoria = new Categoria();
 	
 	public function __construct($cant=null,$precio=null,$estado=null,$nombre=null){
@@ -15,15 +14,21 @@ class Producto {
 		$this->estado = $estado;
 		$this->nombre = $nombre;
 		$this->familia = array();
-        $this->nombreO = array();
+        //$this->nombreO = array();
 	}
 	
 	public function Ingresar(){
         $vec=$this->familia;
         $x=$vec[0]->getFamilia();
 		$db = new Conexion();
-		$db->query("INSERT INTO `producto`(`nombre_prod`, `categoria_familia`, `cantidad_interna`, `precio`, `estado`) VALUES ('$this->nombre','$x',$this->cant,$this->precio,'$this->estado');");
+		$db->query("INSERT INTO `producto`(`categoria_cod_familias`,`nombre_prod`, `cantidad_interna`, `precio`, `estado`) VALUES ('$x','$this->nombre',$this->cant,$this->precio,'$this->estado');");
 	}
+
+    /*
+    ,'$x'
+    INSERT INTO `producto`(`codigo_interno`, `categoria_cod_familias`, `cantidad_interna`, `precio`, `estado`,`nombre_prod`) VALUES (0,1,20,85000,'activo','Osos medianos')
+    
+    */
 	
 	public function Imprimir(){
         $vec=$this->familia;
@@ -32,17 +37,16 @@ class Producto {
 		"Precio",$this->precio,"<br>",
 		"Estado",$this->estado,"<br>",
 		"Nombre",$this->nombre,"<br>",
-        "familia",$vec[0]->getFamilia(),"<br>"
+        "familia",$vec[0],"<br>"
 		/*"Codigo",$this->codigoP,"<br>"*/;
 	}
 	
 	public function Modificar(){
         $vec=$this->familia;
-        $x=$vec[0]->getFamilia();
-        $nom=$this->nombreO;
-        $p=$nom[0];
+        $x=$vec[0];
+        $p=$vec[1];
 		$db = new Conexion();
-		$db->query("UPDATE producto SET `nombre_prod`='$this->nombre',`categoria_familia`='$x',`cantidad_interna`=$this->cant,`precio`=$this->precio,`estado`='$this->estado' WHERE nombre_prod='$p';");
+		$db->query("UPDATE producto SET `nombre_prod`='$this->nombre',`categoria_cod_familias`='$x',`cantidad_interna`=$this->cant,`precio`=$this->precio,`estado`='$this->estado' WHERE nombre_prod='$p';");
 	}
 	/*UPDATE `producto` SET `nombre_prod`='Perros Medianos',`categoria_familia`='Perros',`cantidad_interna`=35,`precio`=0,`estado`='activo' WHERE nombre_prod='perros l'*/
 	public function Desactivar(){
