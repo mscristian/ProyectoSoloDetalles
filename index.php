@@ -1,98 +1,107 @@
-<?PHP
+<!DOCTYPE HTML>
 
-require('includes/contenido/class.Conexion.php');
-include('includes/libs/Smarty.class.php');
-include('includes/contenido/class.Acceso.php');
-include('includes/contenido/class.Informe.php');
-include('includes/contenido/class.ControlAcceso.php');
-date_default_timezone_set('America/Bogota');
-$template = new Smarty(0);
+<?php
 
-$modo = isset($_GET['modo']) ? $_GET['modo'] : 'default';
-
-switch($modo) {
-	case 'login':
-		if (isset($_POST['login'])) {
-			($_POST['sesion']==1) ? $ses=1 : $ses=0;
-			if (!empty($_POST['user']) and !empty($_POST['pass']))
-			{
-				$login = new Acceso($_POST['user'],$_POST['pass'],"","","","","","",$ses);
-				$login->Login();
-			} else {
-				header('location: index.php?error=campos_vacios');
-			}
-		} else {
-			header('location: index.php');
-		}
-		break;
-        
-	case 'registro':
-		if(isset($_POST['registro'])){
-			if(!empty($_POST['user']) and !empty($_POST['pass']) and !empty($_POST['email']) and !empty($_POST['tipoU'])){
-			
-				empty($_POST['cc'])?$cc=0:$cc=$_POST['cc'];
-				empty($_POST['nombre'])?$nombre="NULL":$nombre=$_POST['cc'];
-				empty($_POST['apellido'])?$apellido="NULL":$apellido=$_POST['cc'];
-				empty($_POST['telefono'])?$telefono=0:$telefono=$_POST['cc'];
-
-				$registro = new Acceso($_POST['user'],$_POST['pass'],$_POST['email'],$_POST['tipoU'],$cc,$nombre,$apellido,$telefono);
-				$registro->Registro();
-			}else{
-				header('location: index.php?modo=registro&error=campos_vacios');
-			}
-		}else if(isset($_GET['error']) and $_GET['error'] == 'campos_vacios'){
-			$template->assign(array('error' => 'ERROR: Debe llenar todos los campos obligatorios'));
-			$template->display('registro.tpl');
-		}else if(isset($_GET['error']) and $_GET['error'] == 'usuario_usado'){
-			$template->assign(array('error' => 'ERROR: El usuario ya existe'));
-			$template->display('registro.tpl');
-		}else if(isset($_GET['error']) and $_GET['error'] == 'email_usado'){
-			$template->assign(array('error' => 'ERROR: El correo ya existe'));
-			$template->display('registro.tpl');
-		}else if(isset($_GET['error']) and $_GET['error'] == 'email_user_usado'){
-			$template->assign(array('error' => 'ERROR: El correo y la contraseña ya existen haz olvidado tu contraseña? <a href="index.php?modo=claveperdida">Recuperar</a>'));
-			$template->display('registro.tpl');
-		} else {
-			$template->display('registro.tpl');
-		}
-		break;
-        
-	case 'claveperdida':
-		if(isset($_POST['email'])){
-			if(!empty($_POST['email']))	{
-				$recuperar = new Acceso("","",$_POST['email']);
-				$recuperar->ClavePerdida();
-			}else{
-				header ('location: index.php?modo=claveperdida&error=campos_vacios');
-			}
-		}else if(isset($_GET['error']) and $_GET['error']=='campos_vacios'){
-			$template->assign(array('error' => 'ERROR: Debe ingresar un correo'));
-			$template->display('claveperdida.tpl');
-		}else if(isset($_GET['error']) and $_GET['error']=='email_inexistente'){
-			$template->assign(array('error' => 'ERROR: No se encontro el correo'));
-			$template->display('claveperdida.tpl');
-		}else if(isset($_GET['succes']) and $_GET['succes']=='1'){
-			$template->assign(array('error' => 'Emos enviado una nueva clave a su correo'));
-			$template->display('claveperdida.tpl');
-		}else{
-			$template->display('claveperdida.tpl');
-		}
-		break;
-	default:
-        if (isset($_GET['error']) and $_GET['error'] == 'campos_vacios') {
-            $template->assign(array('error' => 'ERROR: Debes llenar los campos'));
-            $template->display('index.tpl');
-        } else if (isset($_GET['error']) and $_GET['error'] == 'datos_incorrectos') {
-            $template->assign(array('error' => 'ERROR: Usuario o contraseña incorrectos'));
-            $template->display('index.tpl');
-        } else if (isset($_GET['error']) and $_GET['error'] == 'acceso') {
-            $template->assign(array('error' => 'ERROR: La sesionn a caducado o no a iniciado sesion'));
-            $template->display('index.tpl');
-        } else {
-        
-		    $template->display('index.tpl');
-		    break;
-        }
-}
+include ("class.Reportes.php");		
 
 ?>
+
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>Reportes</title>
+
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+		<style type="text/css">
+#container, #sliders {
+	min-width: 310px; 
+	max-width: 800px;
+	margin: 0 auto;
+}
+#container {
+	height: 400px; 
+}
+		</style>
+		<script type="text/javascript">
+$(function () {
+    // Set up the chart
+    var chart = new Highcharts.Chart({
+        chart: {
+            renderTo: 'container',
+            type: 'column',
+            margin: 75,
+            options3d: {
+                enabled: true,
+                alpha: 15,
+                beta: 15,
+                depth: 50,
+                viewDistance: 25
+            }
+        },
+        title: {
+            text: 'Ventas'
+        },
+        subtitle: {
+            text: 'Test options by dragging the sliders below'
+        },
+        plotOptions: {
+            column: {
+                depth: 25
+            }
+        },
+        series: [{
+			
+			data:[
+			
+			<?php
+					$rep = new Reportes();
+					$x=$rep->$_GET['e']($_GET['a'],$_GET['b'],$_GET['c'],$_GET['d']);
+					$c = count($x);
+					for ($i=0;$i<$c;$i++)
+					{
+			?>
+			
+            [<?php echo $x[$i][5];?>],
+			
+			<?php
+					}
+			?>
+			]
+        }]
+    });
+
+    function showValues() {
+        $('#R0-value').html(chart.options.chart.options3d.alpha);
+        $('#R1-value').html(chart.options.chart.options3d.beta);
+    }
+
+    // Activate the sliders
+    $('#R0').on('change', function () {
+        chart.options.chart.options3d.alpha = this.value;
+        showValues();
+        chart.redraw(false);
+    });
+    $('#R1').on('change', function () {
+        chart.options.chart.options3d.beta = this.value;
+        showValues();
+        chart.redraw(false);
+    });
+
+    showValues();
+});
+		</script>
+	</head>
+	<body>
+<script src="../../js/highcharts.js"></script>
+<script src="../../js/highcharts-3d.js"></script>
+<script src="../../js/modules/exporting.js"></script>
+
+<div id="container"></div>
+<div id="sliders">
+	<table>
+		<tr><td>Alpha Angle</td><td><input id="R0" type="range" min="0" max="45" value="15"/> <span id="R0-value" class="value"></span></td></tr>
+	    <tr><td>Beta Angle</td><td><input id="R1" type="range" min="0" max="45" value="15"/> <span id="R1-value" class="value"></span></td></tr>
+	</table>
+</div>
+	</body>
+</html>
