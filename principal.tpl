@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>PRINCIPAL</title>
@@ -8,15 +9,28 @@
         
         <link rel="stylesheet" href="estilos/css/estilo.css" />
         <link rel="stylesheet" href="estilos/css/font-awesome.min.css" />
+        <link rel="stylesheet" href="estilos/css/jquery-ui.min.css" />
 		
-		<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+		<script src="estilos/js/jquery-1.12.3.min.js"></script>
 		<script src="estilos/js/jquery.slides.min.js"></script>
 		<script src="estilos/js/jquery.config.js"></script>
-        
-        
+        <script src="estilos/js/jquery-ui.min.js"></script>
+        <script>
+            $('document').ready(function(){
+                $('.inp-buscar1').autocomplete({
+                   source : 'includes/contenido/ajax.php'
+                });
+            });
+        </script>
+		
+		
     </head>
     <body>		
 		<div id="pagina">
+            <form method="post" action="principal.php">
+                <input type="submit" name="cerrar" value="Cerrar Sesiòn" class="inp-buscar3"/>
+            </form>
+            
             <header>
                 <div id="logo"></div>
             </header>
@@ -26,13 +40,13 @@
                         <a href="principal.php?opcion=inventario"><li><i class="fa fa-shopping-bag"></i>Inventario</li></a>
                         <a href="principal.php?opcion=producto"><li><i class="fa fa-archive"></i>Productos</li></a>
 						<a href="principal.php?opcion=categoria"><li><i class="fa fa-archive"></i>Categoria</li></a>
-                        <a href="principal.php?opcion=proveedor"><li><i class="fa fa-truck"></i>Proveedores</li></a>
+                        <!--<a href="principal.php?opcion=proveedor"><li><i class="fa fa-truck"></i>Proveedores</li></a>-->
                         <a href="principal.php?opcion=vender"><li><i class="fa fa-shopping-basket"></i>Vender</li></a>
                     </ul>
-                    <div id="buscar">
+                    <!--<div id="buscar">
                         <input class="inp-buscar" type="text" value="" name="" placeholder="Buscar...">
                         <div class="btn-buscar"><i class="fa fa-search fa-lg"></i></div>
-                    </div>
+                    </div>-->
                 </nav>
 			{if isset($submenu)}
             <aside>
@@ -45,7 +59,7 @@
 					<a href="principal.php?opcion=categoria&opc=Ingresar"><li>Ingresar Categoria</li></a>
 					<a href="principal.php?opcion=categoria&opc=Modificar"><li>Modificar Categoria</li></a>
 					<a href="principal.php?opcion=categoria&opc=Consultar"><li>Consultar Categoria</li></a>
-					<a href="principal.php?opcion=categoria&opc=Desactivar"><li>Desactivar</li></a>
+					
 				</ul>
 				
 				{elseif $submenu eq 3}
@@ -53,7 +67,6 @@
 					<a href="principal.php?opcion=producto&opc=Ingresar"><li>Ingresar Producto</li></a>
 					<a href="principal.php?opcion=producto&opc=Modificar"><li>Modificar Producto</li></a>
 					<a href="principal.php?opcion=producto&opc=Consultar"><li>Consultar Producto</li></a>
-					<a href="principal.php?opcion=producto&opc=Desactivar"><li>Desactivar</li></a>
 				</ul>
 				{elseif $submenu eq 4}
 				<ul>	
@@ -63,7 +76,8 @@
 				{elseif $submenu eq 5}
 				<ul>	
 					<a href="principal.php?opcion=vender&opc=Ingresar"><li>Ingresar Venta</li></a>
-					<a href="principal.php?opcion=vender&opc=Devolucion"><li>Devolución</li></a>
+					<!--<a href="principal.php?opcion=vender&opc=Devolucion"><li>Devolución</li></a>-->
+					<a href="principal.php?opcion=vender&opc=Consultar"><li>Consultar</li></a>
 				</ul>
 				{/if}
 			</aside>
@@ -94,8 +108,8 @@
 				{/if}
 				</center>
 			</section>
-            <footer><center>Acerca de Crow Unity - Desarrolladores -Derechos De Autor - Terminos Y Condiciones<br /> 
-				Privacidad - Politica Y Seguridad - © Crow Unity 2016</center><div id="logofo"></div></footer>
+            <footer><center><div class="foo"><a href="https://drive.google.com/open?id=0B4tUzJUf610iQjNCWTFFQmhNYTg" target="_blank"> Acerca de Crow Unity - Desarrolladores -Derechos De Autor - Terminos Y Condiciones<br /> 
+				Privacidad - Politica Y Seguridad - © Crow Unity 2016</a></div></center><div id="logofo"></div></footer>
         </div>
     </body>
 </html>
