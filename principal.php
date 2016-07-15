@@ -15,7 +15,7 @@ include('includes/contenido/class.Proveedor.php');
 include('includes/contenido/class.Compra.php');
 include('includes/contenido/class.DetalleCom.php');
 include('includes/contenido/class.ControlAcceso.php');
-include('includes/contenido/class.TemporalDev.php');
+include('includes/contenido/class.Reportes.php');
 $template = new Smarty(0);
 error_reporting(0);
 session_start();
@@ -402,8 +402,76 @@ if(isset($_SESSION['user'])) {
 			
 		} else if ($_GET['opcion']=="reportes"){
             $template->assign('submenu', 7);
+			$fecha = date('Y-m-d');
+			$hora = date('H:i');
+			$fecha_hora_actual = $fecha.'T'.$hora;
+			$template->assign('fecha', $fecha_hora_actual);
 			if ($_GET['opc']=="consulta_unica"){
 				$template->assign('opc', 1);
+				if (isset($_POST['registroV'])) {
+					$reportes = new Reportes();
+					$rep=$reportes->Ventas($_POST['Tipo'],$_POST['FechaI'],$_POST['FechaF'],$_POST['Orden']);
+					$c = count($rep);
+					$template->assign('c',$c);
+					$template->assign('vec',$rep);
+					$template->assign('men',1);
+				} else if (isset($_POST['registroC'])) {
+					$reportesCom = new Reportes();
+					$repc=$reportesCom->Compras($_POST['Tipo'],$_POST['FechaI'],$_POST['FechaF'],$_POST['Orden']);
+					$c = count($repc);
+					$template->assign('c',$c);
+					$template->assign('vec',$repc);
+					$template->assign('men',2);
+				} else if (isset($_POST['registroP'])) {
+					$reportesPro = new Reportes();
+					$repP=$reportesPro->ConsultarProductos($_POST['Tipo'],$_POST['FechaI'],$_POST['FechaF'],$_POST['Orden']);
+					$c = count($repP);
+					$template->assign('c',$c);
+					$template->assign('vec',$repP);
+					$template->assign('men',3);
+				} else if (isset($_POST['registroCli'])) {
+					$reportes = new Reportes();
+					$rep=$reportes->Clientes($_POST['FechaI'],$_POST['FechaF'],$_POST['Orden']);
+					$c = count($rep);
+					$template->assign('c',$c);
+					$template->assign('vec',$rep);
+					$template->assign('men',4);
+				} else if (isset($_POST['registroProv'])) {
+					$reportes = new Reportes();
+					$rep=$reportes->Proveedores($_POST['FechaI'],$_POST['FechaF'],$_POST['Orden']);
+					$c = count($rep);
+					$template->assign('c',$c);
+					$template->assign('vec',$rep);
+					$template->assign('men',5);
+				}
+				
+				//////////////
+				
+				if (isset($_POST['TortaV'])) {
+					header ("location: reportes/Diagramas/3d-pie/ventas.php?a=$_POST[Tipo]&b=$_POST[FechaI]&c=$_POST[FechaF]&d=$_POST[Orden]&e=Ventas");
+				} else if (isset($_POST['TortaC'])) {
+					header ("location: reportes/Diagramas/3d-pie/compras.php?a=$_POST[Tipo]&b=$_POST[FechaI]&c=$_POST[FechaF]&d=$_POST[Orden]&e=Compras");
+				} else if (isset($_POST['TortaProd'])) {
+					header ("location: reportes/Diagramas/3d-pie/productos.php?a=$_POST[Tipo]&b=$_POST[FechaI]&c=$_POST[FechaF]&d=$_POST[Orden]&e=ConsultarProductos");
+				} else if (isset($_POST['TortaClie'])) {
+					header ("location: reportes/Diagramas/3d-pie/clientes.php?a=$_POST[FechaI]&b=$_POST[FechaF]&c=$_POST[Orden]&e=Clientes");
+				} else if (isset($_POST['TortaProv'])) {
+					header ("location: reportes/Diagramas/3d-pie/proveedores.php?a=$_POST[FechaI]&b=$_POST[FechaF]&c=$_POST[Orden]&e=Proveedores");
+				} 
+				
+				////////////////////
+				
+				if (isset($_POST['ColumnaV'])) {
+					header ("location: reportes/Diagramas/3d-column-null-values/ventas.php?a=$_POST[Tipo]&b=$_POST[FechaI]&c=$_POST[FechaF]&d=$_POST[Orden]&e=Ventas");
+				} else if (isset($_POST['ColumnaC'])) {
+					header ("location: reportes/Diagramas/3d-column-null-values/compras.php?a=$_POST[Tipo]&b=$_POST[FechaI]&c=$_POST[FechaF]&d=$_POST[Orden]&e=Compras");
+				} else if (isset($_POST['ColumnaProd'])) {
+					header ("location: reportes/Diagramas/3d-column-null-values/productos.php?a=$_POST[Tipo]&b=$_POST[FechaI]&c=$_POST[FechaF]&d=$_POST[Orden]&e=ConsultarProductos");
+				} else if (isset($_POST['ColumnaClie'])) {
+					header ("location: reportes/Diagramas/3d-column-null-values/clientes.php?a=$_POST[FechaI]&b=$_POST[FechaF]&c=$_POST[Orden]&e=Clientes");
+				} else if (isset($_POST['ColumnaProv'])) {
+					header ("location: reportes/Diagramas/3d-column-null-values/proveedores.php?a=$_POST[FechaI]&b=$_POST[FechaF]&c=$_POST[Orden]&e=Proveedores");
+				} 
 			}else if ($_GET['opc']=="consulta_mezclada"){
 				$template->assign('opc', 2);
 				if(isset($_POST['buscar'])){
