@@ -25,7 +25,6 @@ class Acceso {
 			header('location: index.php?error=datos_incorrectos');
 		}
 	}
-	
 	public function Registro() {
 		
 	}
