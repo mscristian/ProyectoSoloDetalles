@@ -1,20 +1,26 @@
 <!DOCTYPE HTML>
 <?php
+date_default_timezone_set('America/Bogota');	
 require('includes/contenido/class.Conexion.php');
 include('includes/libs/Smarty.class.php');
 include('includes/contenido/class.Informe.php');
 include('includes/contenido/class.Categoria.php');
 include('includes/contenido/class.Producto.php');
 include('includes/contenido/class.TemporalVenta.php');
+include('includes/contenido/class.TemporalCompra.php');
 include('includes/contenido/class.Venta.php');
 include('includes/contenido/class.Detalle.php');
+include('includes/contenido/class.Cliente.php');
+include('includes/contenido/class.Proveedor.php');
+include('includes/contenido/class.Compra.php');
+include('includes/contenido/class.DetalleCom.php');
+include('includes/contenido/class.ControlAcceso.php');
+include('includes/contenido/class.TemporalDev.php');
 $template = new Smarty(0);
 error_reporting(0);
 session_start();
 
 if(isset($_SESSION['user'])) {
-	
-	
 	if(isset($_GET['opcion'])){
 		if ($_GET['opcion']=="inventario"){
 			
@@ -179,10 +185,63 @@ if(isset($_SESSION['user'])) {
 			
 		} else if ($_GET['opcion']=="proveedor"){
 			$template->assign('submenu', 4);
-			if ($_GET['opc']=="Consultar"){
+			if ($_GET['opc']=="Ingresar"){
 				$template->assign('opc', 1);
-			} else if ($_GET['opc']=="Calificar"){
+				
+				if (isset($_POST['datos'])){ 
+                        $consulta = new Informe();
+						$con=$consulta->ConsultarProveedor($_POST['nombre']);
+						
+                        if($con=="n1"){
+                            $categoria = new Proveedor($_POST['nombre'],$_POST['calificacion'],$_POST['email'],$_POST['tf'],$_POST['tc']);
+				            $categoria->Ingresar();
+                            $template->assign('control','op0');
+                            $con1=$consulta->ConsultarProveedor($_POST['nombre']);
+                            $template->assign('prod',$con1);
+                        }else{
+						  $template->assign('control','op1');                  
+                        }						
+					}
+				
+				
+			} else if ($_GET['opc']=="Modificar"){
 				$template->assign('opc', 2);
+				
+				if (isset($_POST['nombre'])){
+						
+						$consulta = new Informe();
+						$x=$consulta->ConsultarProveedor($_POST['nombre']);
+						$template->assign('mod', $x);
+                        
+						if(isset($_POST['modifique'])){
+							$obj = new Proveedor($_POST['nombre'],$_POST['calificacion'],$_POST['email'],$_POST['tf'],$_POST['tc'],$_POST['id']);
+							$obj->Modificar();
+							header('Location: principal.php?opcion=proveedor&opc=Modificar&sus=1');
+						}
+					}
+					if ($_GET['sus']==1){
+						$template->assign('modsucces', 1);
+					}
+				
+			} else if ($_GET['opc']=="Consultar"){
+				$template->assign('opc', 3);
+				if (isset($_POST['nombre'])){
+						
+						$consulta = new Informe();
+						$x=$consulta->ConsultarProveedor($_POST['nombre']);
+						
+						$template->assign('vec', $x);
+					}
+			} else if ($_GET['opc']=="Calificar"){
+				$template->assign('opc', 4);
+                
+                
+                $calprov=new Informe();
+                $vec=$calprov->ConsultarProveedorAll();
+                $c=count($vec);
+                $template->assign('c',$c);
+                $template->assign('vec',$vec);
+                
 			}
 			
 		} else if ($_GET['opcion']=="vender"){
@@ -201,17 +260,25 @@ if(isset($_SESSION['user'])) {
                             if($con=="n1"){
                                 $template->assign('control','op0');
                             }else{
-                                $temporal = new TemporalV($con[5],$con[6],0,$con[0],$con[1],$con[3]);
+                                $temporal = new TemporalV($con[5],$con[6],0,$con[0],$con[1],$con[3],$_POST['cant']);
                                 $temporal->Ingresar();
                                 $template->assign('control','op1');     
                             }
                         }
                 } else if (isset($_POST['vender'])){
-					setlocale(LC_ALL, 'es_VE');	date_default_timezone_set('America/Bogota');
 					
 					$fecha_hora_actual = date('Y-m-d H:i:s');
 					
-					$vender = new Venta($_POST['total'],$_POST['total'],$fecha_hora_actual);
+					$cliente = new Informe();
+					if (empty($_POST['documento'])){
+						$idc = 999999999;
+					} else {
+						$id=$cliente->ConsultarCliente($_POST['documento']);
+						$idc = $id[0];
+					}
+					
+					
+					$vender = new Venta($idc,$_POST['total'],$_POST['totalR'],$fecha_hora_actual);
 					
 					$vender->Ingresar();
                     $conid= new Informe();
@@ -219,7 +286,7 @@ if(isset($_SESSION['user'])) {
                     $vect=$tablav->ConsultarTemporalVt();
                     $c = count($vect);
                     for ($i = 0; $i <= $c-1; $i++){
-                        $detalle = new Detalle($vect[$i][0],$vect[$i][1],$id);
+                        $detalle = new Detalle($vect[$i][0],$vect[$i][1],$id,$idc,$vect[$i][2]);
                         $detalle->Ingresar();
                         $detalle->Descontar();
                     }
@@ -236,6 +303,34 @@ if(isset($_SESSION['user'])) {
                  
 			} else if ($_GET['opc']=="Devolucion"){
 				$template->assign('opc', 2);
+				$venta = new Informe();
+				$conv=$venta->ConsultarVenta();
+				$c = count($conv);
+				$template->assign('c',$c);
+				$template->assign('vec',$conv);
+				if(isset($_POST['consultar'])){
+					$template->assign('opcv', 1);
+					$consultav = new Informe();
+					$convi=$consultav->ConsultarVentaId($_POST['consultar']);
+					$template->assign('vecci', $convi);
+					$consultapv = new Informe();
+					$conpv=$consultapv->ConsultarProductosVen($_POST['consultar']);
+					$c = count($conpv);
+					$template->assign('c',$c);
+					$template->assign('vec',$conpv);
+				}		
+				
+				if(isset($_POST['cambiarE'])){
+					$idVenta = 'idVenta';
+					echo $_POST[$idVenta],'<br>';
+						for($i=0;$i<=$c;$i++){
+							$estado = 'Estado'.$i;
+							$cantidad = 'Cantidad'.$i;
+							$idProducto = 'idProducto'.$i;
+							$actDet = new Detalle('',$_POST[$idProducto],$_POST[$idVenta],'',$_POST[$cantidad],$_POST[$estado]);
+                            $actDet->ActualizarEstado();
+						}
+					}
 			} else if ($_GET['opc']=="Consultar"){
 				$template->assign('opc', 3);
 				$venta = new Informe();
@@ -256,7 +351,212 @@ if(isset($_SESSION['user'])) {
 				}
 			}
 			
-		} 
+		} else if ($_GET['opcion']=="clientes"){
+			$template->assign('submenu', 6);
+			if ($_GET['opc']=="Ingresar"){
+				$template->assign('opc', 1);
+				
+				if (isset($_POST['datos'])){ 
+                        $consulta = new Informe();
+						$con=$consulta->ConsultarCliente($_POST['documento']);
+						
+                        if($con=="n1"){
+                            $cliente = new Cliente($_POST['nombre'],$_POST['apellido'],$_POST['documento'],$_POST['email'],$_POST['telefono'],$_POST['direccion']);
+							//$nombre,$apellido,$documento,$correo,$telefono,$direccion
+				            $cliente->Ingresar();
+                            $template->assign('control','op0');
+                            $con1=$consulta->ConsultarCliente($_POST['documento']);
+                            $template->assign('prod',$con1);
+                        }else{
+						  $template->assign('control','op1');                            
+                        }						
+					}
+				
+ 			} else if ($_GET['opc']=="Modificar"){
+				$template->assign('opc', 2);
+				if (isset($_POST['documento'])){
+						
+						$consulta = new Informe();
+						$x=$consulta->ConsultarCliente($_POST['documento']);
+						$template->assign('mod', $x);
+                        
+						if(isset($_POST['modifique'])){
+							$obj = new Cliente($_POST['nombre'],$_POST['apellido'],$_POST['documento'],$_POST['email'],$_POST['telefono'],$_POST['direccion'],$_POST['id']);
+							$obj->Modificar();
+							header('Location: principal.php?opcion=clientes&opc=Modificar&sus=1');
+						}
+					}
+					if ($_GET['sus']==1){
+						$template->assign('modsucces', 1);
+					}
+			} else if ($_GET['opc']=="Consultar"){
+				$template->assign('opc', 3);
+				if (isset($_POST['documento'])){
+						
+						$consulta = new Informe();
+						$x=$consulta->ConsultarCliente($_POST['documento']);
+						
+						$template->assign('vec', $x);
+					}
+			}
+			
+		} else if ($_GET['opcion']=="reportes"){
+            $template->assign('submenu', 7);
+			if ($_GET['opc']=="consulta_unica"){
+				$template->assign('opc', 1);
+			}else if ($_GET['opc']=="consulta_mezclada"){
+				$template->assign('opc', 2);
+				if(isset($_POST['buscar'])){
+					$consulta = new Informe();
+					//$res=$consulta->ReporteVenta($_POST['id'],$_POST['fechaI'],$_POST['fechaI']);
+					echo $_POST['id'],$_POST['opcion'],$_POST['fechaI'],$_POST['fechaF'];
+				}
+			}
+		} else if ($_GET['opcion']=="comprar"){
+			$template->assign('submenu', 8);
+			
+			if ($_GET['opc']=="Ingresar"){
+				$template->assign('opc', 1);
+                $temporal1 = new TemporalCompra();
+                $tablav = new Informe();
+                
+                
+                if (isset($_POST['ingresar'])){
+                    if (isset($_POST['buscar2'])){ 
+
+                            $consulta = new Informe();
+                            $con=$consulta->ConsultarIdProducto($_POST['buscar2']);
+                            if($con=="n1"){
+                                $template->assign('control','op0');
+                            }else{
+/*$cod_familia=null,$cod_producto=null,$cod_venta=null,$producto=null,$familia=null,$cantidad=null*/
+                                $temporal = new TemporalCompra($con[5],$con[6],0,$con[0],$con[1],$_POST['cant'],$con[3]);
+							
+                                $temporal->Ingresar();
+                                $template->assign('control','op1');   
+                            }
+                        }
+                } else if (isset($_POST['comprar'])){
+					
+					$fecha_hora_actual = date('Y-m-d H:i:s');
+					
+					$proveedor = new Informe();
+					if (empty($_POST['nombreE'])){
+						$idc = 999999999;
+					} else {
+						$id=$proveedor->ConsultarProveedor($_POST['nombreE']);
+						$idc = $id[0];
+					}
+					
+					
+					$comprar = new Compra($idc,$_POST['total'],$fecha_hora_actual);
+					
+					$comprar->Ingresar();
+                    $conid= new Informe();
+                    $id=$conid->ConsultarTemporalCid();
+                    $vect=$tablav->ConsultarTemporalCom();
+                    $c = count($vect);
+                    for ($i = 0; $i <= $c-1; $i++){
+/*$cod_familia,$cod_producto,$cod_compra,$cod_proveedor,$cantidad*/
+                        $detalle = new DetalleCompra($vect[$i][0],$vect[$i][1],$id,$idc,$vect[$i][2]);
+                        $detalle->Ingresar();
+                        $detalle->Sumar();
+                    }
+                    $template->assign('control','op2');  
+					$template->assign('idv',$id);  
+                    $temporal1->Limpiar();
+                } else if (isset($_POST['cancelar'])){
+                    $temporal1->Limpiar();
+                }
+                $vect=$tablav->ConsultarTemporalC();
+                $c = count($vect);
+                $template->assign('cont', $c);
+                $template->assign('vect',$vect);
+                 
+			} else if ($_GET['opc']=="Devolucion"){
+				$template->assign('opc', 2);
+				$venta = new Informe();
+				$conv=$venta->ConsultarCompra();
+				$c = count($conv);
+				$template->assign('c',$c);
+				$template->assign('vec',$conv);
+				if(isset($_POST['consultar'])){
+					$template->assign('opcv', 1);
+					$consultav = new Informe();
+					$convi=$consultav->ConsultarCompraId($_POST['consultar']);
+					$template->assign('vecci', $convi);
+					$consultapv = new Informe();
+					$conpv=$consultapv->ConsultarProductosCom($_POST['consultar']);
+					$c = count($conpv);
+					$template->assign('c',$c);
+					$template->assign('vec',$conpv);
+				}
+				if(isset($_POST['cambiarE'])){
+					$idCompra = 'idCompra';
+					echo $_POST[$idVenta],'<br>';
+						for($i=0;$i<=$c;$i++){
+							$estado = 'Estado'.$i;
+							$cantidad = 'Cantidad'.$i;
+							$idProducto = 'idProducto'.$i;
+							$actDet = new DetalleCompra('',$_POST[$idProducto],$_POST[$idCompra],'',$_POST[$cantidad],$_POST[$estado]);
+                            $actDet->ActualizarEstado();
+						}
+					}
+				
+				/*
+				
+				$template->assign('opc', 2);
+				$venta = new Informe();
+				$conv=$venta->ConsultarVenta();
+				$c = count($conv);
+				$template->assign('c',$c);
+				$template->assign('vec',$conv);
+				if(isset($_POST['consultar'])){
+					$template->assign('opcv', 1);
+					$consultav = new Informe();
+					$convi=$consultav->ConsultarVentaId($_POST['consultar']);
+					$template->assign('vecci', $convi);
+					$consultapv = new Informe();
+					$conpv=$consultapv->ConsultarProductosVen($_POST['consultar']);
+					$c = count($conpv);
+					$template->assign('c',$c);
+					$template->assign('vec',$conpv);
+				}		
+				
+				if(isset($_POST['cambiarE'])){
+					$idVenta = 'idVenta';
+					echo $_POST[$idVenta],'<br>';
+						for($i=0;$i<=$c;$i++){
+							$estado = 'Estado'.$i;
+							$cantidad = 'Cantidad'.$i;
+							$idProducto = 'idProducto'.$i;
+							$actDet = new Detalle('',$_POST[$idProducto],$_POST[$idVenta],'',$_POST[$cantidad],$_POST[$estado]);
+                            $actDet->ActualizarEstado();
+						}
+					}
+				
+				*/
+			} else if ($_GET['opc']=="Consultar"){
+				$template->assign('opc', 3);
+				$venta = new Informe();
+				$conv=$venta->ConsultarCompra();
+				$c = count($conv);
+				$template->assign('c',$c);
+				$template->assign('vec',$conv);
+				if(isset($_POST['consultar'])){
+					$template->assign('opcv', 1);
+					$consultav = new Informe();
+					$convi=$consultav->ConsultarCompraId($_POST['consultar']);
+					$template->assign('vecci', $convi);
+					$consultapv = new Informe();
+					$conpv=$consultapv->ConsultarProductosCom($_POST['consultar']);
+					$c = count($conpv);
+					$template->assign('c',$c);
+					$template->assign('vec',$conpv);
+				}
+			}
+			
+		}
 	}
 	$template->display('principal.tpl'); 	
 	
@@ -269,6 +569,11 @@ if(isset($_SESSION['user'])) {
 if (isset($_POST['cerrar'])){
     session_start();
     session_destroy();
+	$accesoid= new Informe();
+    $id=$accesoid->ConsultarAccesoid();
+	$fecha_hora_actual = date('Y-m-d H:i:s');
+	$usuario = new ControlAcceso($_SESSION['user'],$fecha_hora_actual,$id);
+	$usuario->CerrarSesion();
     header ('location: index.php');
 }
 ?>
