@@ -12,9 +12,19 @@
 				<tr><td>Nombre</td><td><input type="text" name="nombre" class="inp-buscar2" required/></td>
 			<tr><td>Cantidad Producto</td><td><input type="text" class="inp-buscar2" name="cantidadP" required/></td>
 			<tr><td>Precio</td><td><input type="text" name="precio" class="inp-buscar2" required/></td>
-			<tr><td>Estado</td><td><input type="text" name="estado" class="inp-buscar2" required/></td>
-			<tr><td>Codigo Familia</td><td><input type="text" class="inp-buscar2" name="codigo"></td>
-			</table><br />
+			<tr><!--<td>Estado</td><td><input type="text" name="estado" class="inp-buscar2" required/></td>
+                <tr>--><td>Familia</td><td>
+                    
+                    <select name="familia" onchange="salta(this.form)" class="inp-buscar2">
+                    <option selected> ---
+                        {for $i=0 to ($vec-1)}	
+                                <option value='{$fam[$i][0]}'>{$fam[$i][1]}
+                                    
+                        {/for}
+                    </select>                             
+                    </td>
+			</table>
+            <br />
 			<input type="submit" value="Insertar" name="insert" id="buttons1">
 		</form>
 		{/if}
@@ -22,7 +32,7 @@
 <h4 class="fa fa-archive fa-2x">Modificar Producto</h4>
 		<form action="principal.php?opcion=producto&opc=Modificar" method="post">
 			<table>
-				<tr><td>Producto </td><td><input type="text" name="nombre" class="inp-buscar2"></td><td><input type="submit" value="Buscar" id="buttons1"></td></tr>
+				<tr><td>Producto </td><td><input type="text" name="nombre" class="inp-buscar1" placeholder="Buscar..." /></td><td><input type="submit" value="Buscar" id="buttons1"></td></tr>
 			</table>
 			
 		</form>	
@@ -36,10 +46,20 @@
 				<form action="principal.php?opcion=producto&opc=Modificar" method="post">
 					<table><input type="hidden" name="nombreO" value="{$mod[0]}" />
 						<tr><td>Producto </td><td><input type="text" name="nombre" value="{$mod[0]}" class="inp-buscar2" required/></td></tr>
-					<tr><td>Categoria </td><td><input type="text" name="familia" value="{$mod[1]}" class="inp-buscar2" required/></td></tr>
+					<tr><td>Categoria </td><td>
+                        
+                        <select name="familia" onchange="salta(this.form)" class="inp-buscar2">
+                        <option selected> {$mod[5]}
+                            {for $i=0 to ($vec-1)}	
+                                    <option value='{$fam[$i][0]}'>{$fam[$i][1]}
+
+                            {/for}
+                        </select>       
+                        
+                        </td></tr>
 					<tr><td>Cantidad </td><td><input type="text" name="cantidad" value="{$mod[2]}" class="inp-buscar2" required/></td></tr>
 					<tr><td>Precio </td><td><input type="text" name="precio" value="{$mod[3]}" class="inp-buscar2" required/></td></tr>
-					<tr><td>Estado </td><td><input type="text" name="estado" value="{$mod[4]}" class="inp-buscar2" required/></td></tr>
+					<tr><td>Estado </td><td>{$mod[4]}<input type="hidden" name="estado" value="{$mod[4]}" class="inp-buscar2" required/></td></tr>
 					</table>
 					<input type="submit" name="modifique" value="Modificar" id="buttons1">	
 				</form>
@@ -65,7 +85,7 @@
                         <td>Categoria</td>
                         <td>Cantidad</td>
                         <td>Precio</td>
-                        <td>Estado</td>		
+                        <td>Estado</td>
                     </tr>		
                     <tr>	
                         <td>{$dato1[0]}</td>
@@ -81,6 +101,6 @@
 <i class="fa fa-cog fa-spin fa-2x"></i> <li class="fa fa-2x">Pagina en Construcción </li><li class="fa fa-gears fa-2x"></li>
 	{/if}
 {else}
-	<h1 class="fa fa-archive fa-2x">Producto</h1><br />
-	<p class="fa fa-archive fa-5x"></p>
+	<a href="principal.php?opcion=producto&opc=Ingresar" class="link1"><h1 class="fa fa-archive fa-2x">Producto</h1><br />
+        <p class="fa fa-archive fa-5x"></p></a>
 {/if}

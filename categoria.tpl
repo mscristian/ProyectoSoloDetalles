@@ -3,7 +3,7 @@
 	{if $opc eq 1}
 <h4 class="fa fa-archive fa-2x">Ingresar Categoria</h4>
 		{if $control eq 'op0'}
-			se ingreso con exito la categoria  {$prod[0]}
+			se ingreso con exito la categoria  {$prod[1]}
 		{elseif $control eq 'op1'}
 			la categoria ya existe
 		{else}
@@ -18,7 +18,7 @@
 	{elseif $opc eq 2}
 <h4 class="fa fa-archive fa-2x">Modificar Categoria</h4>
 		<form action="principal.php?opcion=categoria&opc=Modificar" method="post">
-			Familia <input type="text" name="familia" class="inp-buscar2" required>
+			Familia <input type="text" name="familia" class="inp-buscar4" placeholder="Buscar..." required/>
 			<input type="submit" value="Buscar" id="buttons1">
 		</form>	
 		{if isset($mod)}
@@ -29,8 +29,8 @@
 	
 				<form action="principal.php?opcion=categoria&opc=Modificar" method="post">
 					<table>
-						<tr><td>Familia</td><td><input type="text" name="familia" value="{$mod[0]}" class="inp-buscar2" required/></td></tr>
-						<tr><td>Descipción</td><td><input type="text" name="descripcion" value="{$mod[1]}" class="inp-buscar2" required/></td></tr>
+						<tr><td>Familia</td><td><input type="text" name="familia" value="{$mod[1]}" class="inp-buscar2" required/></td></tr>
+						<tr><td>Descipción</td><td><input type="text" name="descripcion" value="{$mod[2]}" class="inp-buscar2" required/></td></tr>
 					</table>
 					<input type="submit" name="modifique" value="Modificar" id="buttons1">	
 				</form>
@@ -42,7 +42,7 @@
 	{elseif $opc eq 3}
 <h4 class="fa fa-archive fa-2x">Consultar Categoria</h4>
 		<form action="principal.php?opcion=categoria&opc=Consultar" method="post">
-			Familia <input type="text" name="familia" class="inp-buscar2" required>
+			Familia <input type="text" name="familia" class="inp-buscar4" placeholder="Buscar..." required/>
 			<input type="submit" value="Buscar" id="buttons1">
 		</form>	
 {if isset($vec)}
@@ -55,9 +55,9 @@ No se encontraron Categorias
         <td>Descipción</td>
         <td>Cantidad Total</td>
     </tr>
-	<tr><td>{$vec[0]}</td>
-        <td>{$vec[1]}</td>
+	<tr><td>{$vec[1]}</td>
         <td>{$vec[2]}</td>
+        <td>{$vec[3]}</td>
     </tr>
 </table>
 {/if}
@@ -67,6 +67,6 @@ No se encontraron Categorias
 <i class="fa fa-cog fa-spin fa-2x"></i> <li class="fa fa-2x">Pagina en Construcción </li><li class="fa fa-gears fa-2x"></li>
 	{/if}
 {else}
-	<h1 class="fa fa-archive fa-2x">Categoria</h1><br />
-	<p class="fa fa-archive fa-5x"></p>
+	<a href="principal.php?opcion=categoria&opc=Ingresar" class="link1"><h1 class="fa fa-archive fa-2x">Categoria</h1><br />
+        <p class="fa fa-archive fa-5x"></p></a>
 {/if}
